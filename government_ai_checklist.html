@@ -1,0 +1,1315 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>정부 AI 응용 서비스 개발 체크리스트</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&family=Playfair+Display:wght@600;700&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #1F2937;
+            --primary-light: #F3F4F6;
+            --primary-dark: #111827;
+            --accent: #3B82F6;
+            --accent-light: #EFF6FF;
+            --success: #10B981;
+            --success-light: #ECFDF5;
+            --neutral-light: #F9FAFB;
+            --neutral-border: #D1D5DB;
+            --text-primary: #1F2937;
+            --text-secondary: #6B7280;
+            --text-light: #9CA3AF;
+        }
+
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background: #FFFFFF;
+            min-height: 100vh;
+            color: var(--text-primary);
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 30px 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            animation: slideDown 0.6s ease;
+            border-bottom: 1px solid var(--neutral-border);
+            padding-bottom: 30px;
+        }
+
+        .header h1 {
+            font-family: 'Noto Sans KR', sans-serif;
+            font-size: 2.2em;
+            color: var(--primary-dark);
+            margin-bottom: 8px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .header p {
+            font-size: 0.95em;
+            color: var(--text-secondary);
+            font-weight: 400;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 6px;
+            background: var(--neutral-border);
+            border-radius: 3px;
+            margin: 30px 0;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--accent);
+            transition: width 0.4s ease;
+            border-radius: 3px;
+        }
+
+        .step-indicator {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            font-size: 0.9em;
+            color: var(--text-secondary);
+        }
+
+        .step-indicator strong {
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        .section {
+            background: white;
+            border-radius: 8px;
+            padding: 40px;
+            margin-bottom: 20px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            animation: fadeIn 0.5s ease;
+            display: none;
+            border: 1px solid var(--neutral-border);
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        .section h2 {
+            font-family: 'Noto Sans KR', sans-serif;
+            font-size: 1.6em;
+            color: var(--primary-dark);
+            margin-bottom: 12px;
+            font-weight: 700;
+        }
+
+        .section-desc {
+            color: var(--text-secondary);
+            font-size: 0.95em;
+            margin-bottom: 28px;
+            line-height: 1.6;
+        }
+
+        .subsection {
+            margin-bottom: 40px;
+        }
+
+        .subsection h3 {
+            font-size: 1.1em;
+            color: var(--primary);
+            margin-bottom: 8px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .subsection h3::before {
+            content: '';
+            display: inline-block;
+            width: 3px;
+            height: 20px;
+            background: var(--accent);
+            border-radius: 1px;
+        }
+
+        .instruction-box {
+            background: var(--accent-light);
+            border-left: 3px solid var(--accent);
+            padding: 16px 20px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            font-size: 0.95em;
+            line-height: 1.6;
+            color: var(--text-primary);
+        }
+
+        .instruction-box strong {
+            color: var(--primary);
+        }
+
+        .instruction-list {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .instruction-list li {
+            padding: 8px 0;
+            display: flex;
+            gap: 10px;
+        }
+
+        .instruction-list li::before {
+            content: '•';
+            color: var(--primary);
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+
+        .input-section {
+            background: var(--neutral-light);
+            padding: 24px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border: 1px solid var(--neutral-border);
+        }
+
+        .input-section h4 {
+            font-size: 0.95em;
+            color: var(--primary);
+            margin-bottom: 16px;
+            font-weight: 600;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.9em;
+            font-weight: 500;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+        }
+
+        .form-group input[type="text"],
+        .form-group input[type="number"],
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid var(--neutral-border);
+            border-radius: 6px;
+            font-family: 'Noto Sans KR', sans-serif;
+            font-size: 0.95em;
+            color: var(--text-primary);
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group textarea {
+            min-height: 80px;
+            resize: vertical;
+        }
+
+        .form-group input[type="text"]:focus,
+        .form-group input[type="number"]:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(0, 82, 163, 0.1);
+        }
+
+        .checkbox-group {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+        }
+
+        .checkbox-item input[type="checkbox"] {
+            flex-shrink: 0;
+            width: 18px;
+            height: 18px;
+            margin-top: 2px;
+            cursor: pointer;
+            accent-color: var(--primary);
+        }
+
+        .checkbox-item label {
+            margin: 0;
+            flex: 1;
+            cursor: pointer;
+            line-height: 1.5;
+        }
+
+        .navigation {
+            display: flex;
+            gap: 12px;
+            margin-top: 40px;
+            justify-content: space-between;
+        }
+
+        button {
+            flex: 1;
+            padding: 14px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Noto Sans KR', sans-serif;
+        }
+
+        .btn-prev {
+            background: var(--neutral-light);
+            color: var(--text-primary);
+            border: 1px solid var(--neutral-border);
+        }
+
+        .btn-prev:hover {
+            background: #E5E7EB;
+            transform: translateX(-2px);
+        }
+
+        .btn-prev:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-next {
+            background: var(--accent);
+            color: white;
+        }
+
+        .btn-next:hover {
+            background: #2563EB;
+            transform: translateX(2px);
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+        }
+
+        .btn-next:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-export {
+            background: var(--accent);
+            color: white;
+            padding: 10px 18px;
+            font-size: 0.9em;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            white-space: nowrap;
+        }
+
+        .btn-export:hover {
+            background: #2563EB;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+        }
+
+        .btn-export svg {
+            width: 18px;
+            height: 18px;
+            flex-shrink: 0;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 16px;
+            }
+
+            .header h1 {
+                font-size: 1.8em;
+            }
+
+            .section {
+                padding: 24px;
+            }
+
+            .section h2 {
+                font-size: 1.4em;
+            }
+
+            .navigation {
+                flex-direction: column;
+            }
+
+            button {
+                padding: 12px 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>정부 AI 응용 서비스 개발 체크리스트</h1>
+            <p>문제 중심, 사용자 중심, 점진적 검증의 원칙으로 AI 서비스를 설계하세요</p>
+        </div>
+
+        <div class="progress-bar">
+            <div class="progress-fill"></div>
+        </div>
+
+        <div class="step-indicator">
+            <span>Step <strong id="current-step">1</strong> / <strong>5</strong></span>
+            <div style="display: flex; gap: 10px;">
+                <button class="btn-export" onclick="downloadAsFile()" title="파일로 다운로드">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                        <polyline points="7 10 12 15 17 10"></polyline>
+                        <line x1="12" y1="15" x2="12" y2="3"></line>
+                    </svg>
+                    다운로드
+                </button>
+                <button class="btn-export" onclick="printResults()" title="프린트">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="6 9 6 2 18 2 18 9"></polyline>
+                        <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path>
+                        <rect x="6" y="14" width="12" height="8"></rect>
+                    </svg>
+                    프린트
+                </button>
+            </div>
+        </div>
+
+        <!-- Step 1: 문제 정의 -->
+        <div class="section active">
+            <h2>1단계: 문제 정의</h2>
+            <p class="section-desc">무엇이 정말 문제인지를 명확히 파악하세요. 기술이 아니라 행정·시민의 실제 불편을 기준으로 정의합니다.</p>
+
+            <!-- 1-1. 문제 서술의 기준 -->
+            <div class="subsection">
+                <h3>1-1. 문제 서술의 기준</h3>
+                <div class="instruction-box">
+                    <strong>다음 세 가지를 기준으로 문제를 서술하세요:</strong>
+                    <ul class="instruction-list">
+                        <li>기술이 아닌 <strong>행정·시민의 실제 불편</strong>을 기준으로 정의</li>
+                        <li>"AI로 무엇을 할 것인가"가 아니라 <strong>"무엇이 불편한가"</strong>를 정의</li>
+                        <li>현재 제도·업무 구조 하에서 <strong>반복·지연·오류가 발생하는 지점</strong>을 명시</li>
+                    </ul>
+                </div>
+
+                <div class="input-section">
+                    <h4>실제 문제 서술</h4>
+                    <div class="form-group">
+                        <label>어떤 불편이 발생하고 있습니까?</label>
+                        <textarea id="problem-desc" placeholder="예: 민원인의 서류 제출 후 행정 처리 시간이 평균 3주 소요되며, 이로 인해 민원 재신청이 빈번하게 발생합니다."></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 1-2. 문제 정의 체크리스트 -->
+            <div class="subsection">
+                <h3>1-2. 문제 정의 체크리스트</h3>
+                <div class="instruction-box">
+                    <strong>이 네 가지 질문에 답변하여 문제를 명확히 하세요:</strong>
+                </div>
+
+                <div class="input-section">
+                    <h4>체크리스트 항목</h4>
+                    
+                    <div class="form-group">
+                        <label>누가 이 문제로 고통받는가?</label>
+                        <div class="checkbox-group">
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="affected-citizen" name="affected">
+                                <label for="affected-citizen">시민</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="affected-staff" name="affected">
+                                <label for="affected-staff">공무원</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="affected-both" name="affected">
+                                <label for="affected-both">둘 다</label>
+                            </div>
+                        </div>
+                        <textarea id="affected-detail" placeholder="구체적으로 설명해주세요." style="margin-top: 10px;"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>얼마나 자주 발생하는가?</label>
+                        <input type="text" id="frequency" placeholder="예: 월 500건, 일 평균 50건">
+                    </div>
+
+                    <div class="form-group">
+                        <label>해결하지 않을 경우의 사회적·행정적 비용은 무엇인가?</label>
+                        <textarea id="cost-impact" placeholder="예: 민원 재신청으로 인한 행정 비용 증가, 시민 만족도 저하 등"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>법·제도 변경 없이 기술로 개선 가능한 영역인가?</label>
+                        <div class="checkbox-group">
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="tech-feasible-yes">
+                                <label for="tech-feasible-yes">예 - 기술로 개선 가능</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="tech-feasible-no">
+                                <label for="tech-feasible-no">아니오 - 법·제도 변경 필요</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="tech-feasible-partial">
+                                <label for="tech-feasible-partial">일부만 가능 - 부분적 기술 개선</label>
+                            </div>
+                        </div>
+                        <textarea id="tech-feasible-detail" placeholder="세부 설명" style="margin-top: 10px;"></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 1-3. AI 적용 적합성 판단 -->
+            <div class="subsection">
+                <h3>1-3. AI 적용 적합성 판단</h3>
+                <div class="instruction-box">
+                    <strong>다음 네 가지에 대해 확인하여 이 문제가 AI로 해결 가능한지 판단하세요:</strong>
+                </div>
+
+                <div class="input-section">
+                    <h4>AI 적용 검토</h4>
+                    
+                    <div class="form-group">
+                        <label>반복적 판단이 많은가?</label>
+                        <div class="checkbox-group">
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="ai-repetitive-yes">
+                                <label for="ai-repetitive-yes">예</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="ai-repetitive-no">
+                                <label for="ai-repetitive-no">아니오</label>
+                            </div>
+                        </div>
+                        <textarea id="ai-repetitive-detail" placeholder="어떤 반복적 판단이 있는지 설명하세요." style="margin-top: 10px;"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>대량의 문서·데이터를 다루는가?</label>
+                        <div class="checkbox-group">
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="ai-data-yes">
+                                <label for="ai-data-yes">예</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="ai-data-no">
+                                <label for="ai-data-no">아니오</label>
+                            </div>
+                        </div>
+                        <textarea id="ai-data-detail" placeholder="어떤 규모의 데이터인지 설명하세요." style="margin-top: 10px;"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>사람의 전문성이 병목이 되는가?</label>
+                        <div class="checkbox-group">
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="ai-bottleneck-yes">
+                                <label for="ai-bottleneck-yes">예</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="ai-bottleneck-no">
+                                <label for="ai-bottleneck-no">아니오</label>
+                            </div>
+                        </div>
+                        <textarea id="ai-bottleneck-detail" placeholder="어떻게 병목인지 설명하세요." style="margin-top: 10px;"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>완전 자동화가 아닌 "보조"로도 효과가 있는가?</label>
+                        <div class="checkbox-group">
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="ai-support-yes">
+                                <label for="ai-support-yes">예 - 보조로도 충분</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="ai-support-no">
+                                <label for="ai-support-no">아니오 - 완전 자동화 필요</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="ai-support-partial">
+                                <label for="ai-support-partial">부분적 - 영역에 따라 다름</label>
+                            </div>
+                        </div>
+                        <textarea id="ai-support-detail" placeholder="구체적인 효과를 설명하세요." style="margin-top: 10px;"></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Step 2: 데이터 정의 -->
+        <div class="section">
+            <h2>2단계: 데이터 정의</h2>
+            <p class="section-desc">문제를 풀기 위해 필요한 데이터를 명확히 파악하고 속성을 정의하세요.</p>
+
+            <!-- 2-1. 데이터 리스트업 -->
+            <div class="subsection">
+                <h3>2-1. 데이터 리스트업</h3>
+                <div class="instruction-box">
+                    <strong>다음 네 가지 범주에서 필요한 데이터를 파악하세요:</strong>
+                    <ul class="instruction-list">
+                        <li><strong>업무 데이터:</strong> 행정시스템, 업무 이력, 민원 데이터</li>
+                        <li><strong>법·규정·지침 문서:</strong> 관련 법령, 행정 규칙, 업무 지침</li>
+                        <li><strong>외부 데이터:</strong> 타 부처 데이터, 공공데이터, 통계</li>
+                        <li><strong>실시간 데이터:</strong> 실시간/준실시간 업데이트 필요 여부</li>
+                    </ul>
+                </div>
+
+                <div class="input-section">
+                    <h4>필요한 데이터 목록</h4>
+                    
+                    <div class="form-group">
+                        <label>1. 업무 데이터 (행정시스템, 업무 이력, 민원 데이터)</label>
+                        <textarea id="data-operational" placeholder="예: 민원 접수 시스템 데이터, 처리 이력, 첨부 문서 등"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>2. 법·규정·지침 문서</label>
+                        <textarea id="data-legal" placeholder="예: 관련 법령, 훈령, 업무 지침 등"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>3. 외부 데이터 (타 부처, 공공데이터, 통계)</label>
+                        <textarea id="data-external" placeholder="예: 다른 부처의 데이터, 공공데이터포털 등"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>4. 실시간/준실시간 데이터 필요 여부</label>
+                        <div class="checkbox-group">
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="data-realtime-yes">
+                                <label for="data-realtime-yes">예 - 실시간 업데이트 필요</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="data-realtime-batch">
+                                <label for="data-realtime-batch">배치 처리 - 정기적 업데이트로 충분</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2-2. 데이터 속성 명시 -->
+            <div class="subsection">
+                <h3>2-2. 데이터 속성 명시</h3>
+                <div class="instruction-box">
+                    <strong>각 데이터에 대해 다음 다섯 가지를 명시하세요:</strong>
+                    <ul class="instruction-list">
+                        <li><strong>소유 부처:</strong> 데이터를 보유한 담당 부처</li>
+                        <li><strong>생성 주기:</strong> 데이터 생성 빈도 (일, 주, 월 단위)</li>
+                        <li><strong>최신성 요구:</strong> 데이터 업데이트 필요성 수준</li>
+                        <li><strong>민감도:</strong> 개인정보 / 민감정보 / 비식별 가능 여부</li>
+                        <li><strong>형식:</strong> 정형 데이터 / 비정형 데이터</li>
+                    </ul>
+                </div>
+
+                <div class="input-section">
+                    <h4>데이터 속성 작성</h4>
+                    <p style="color: var(--text-secondary); font-size: 0.9em; margin-bottom: 16px;">주요 데이터 소스 1개를 선택하여 아래 정보를 작성하세요.</p>
+                    
+                    <div class="form-group" style="margin-bottom: 24px;">
+                        <label>데이터 소스명</label>
+                        <input type="text" id="data-source-1" placeholder="예: 민원 접수 시스템">
+                    </div>
+
+                    <div class="form-group">
+                        <label>소유 부처</label>
+                        <input type="text" id="data-owner-1" placeholder="예: OO부 OO과">
+                    </div>
+
+                    <div class="form-group">
+                        <label>생성 주기</label>
+                        <input type="text" id="data-cycle-1" placeholder="예: 실시간, 일 1회, 월 1회">
+                    </div>
+
+                    <div class="form-group">
+                        <label>최신성 요구 수준</label>
+                        <select id="data-freshness-1">
+                            <option value="">선택하세요</option>
+                            <option value="realtime">실시간</option>
+                            <option value="hourly">시간 단위</option>
+                            <option value="daily">일 단위</option>
+                            <option value="weekly">주 단위</option>
+                            <option value="monthly">월 단위</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>민감도</label>
+                        <select id="data-sensitivity-1">
+                            <option value="">선택하세요</option>
+                            <option value="personal">개인정보</option>
+                            <option value="sensitive">민감정보</option>
+                            <option value="anonymized">비식별화 가능</option>
+                            <option value="public">공개 정보</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>데이터 형식</label>
+                        <div class="checkbox-group">
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="data-type-structured">
+                                <label for="data-type-structured">정형 (DB, CSV 등)</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="data-type-unstructured">
+                                <label for="data-type-unstructured">비정형 (문서, 이미지 등)</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2-3. AI 관점 데이터 점검 -->
+            <div class="subsection">
+                <h3>2-3. AI 관점 데이터 점검</h3>
+                <div class="instruction-box">
+                    <strong>AI 모델 구축 관점에서 데이터를 다시 검토하세요:</strong>
+                </div>
+
+                <div class="input-section">
+                    <h4>AI 검토 항목</h4>
+
+                    <div class="form-group">
+                        <label>학습용/추론용 데이터 구분</label>
+                        <textarea id="ai-data-split" placeholder="예: 과거 3년 데이터 100,000건을 학습용으로, 최근 데이터를 추론용으로 사용"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>최신성 유지 필요 여부</label>
+                        <div class="checkbox-group">
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="ai-freshness-yes">
+                                <label for="ai-freshness-yes">예 - 주기적 재학습 필요</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="ai-freshness-no">
+                                <label for="ai-freshness-no">아니오 - 일회성 학습으로 충분</label>
+                            </div>
+                        </div>
+                        <textarea id="ai-freshness-detail" placeholder="설명" style="margin-top: 10px;"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>규칙 기반으로 대체 가능한 영역이 있는가?</label>
+                        <textarea id="ai-rules-alternative" placeholder="예: 형식 검사는 규칙으로 가능하며, 내용 검토만 AI로 처리하면 됨"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>데이터 편향 가능성 분석</label>
+                        <textarea id="ai-bias-analysis" placeholder="예: 특정 지역, 계절, 민원 유형에 편향된 데이터 없는지 확인"></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Step 3: 협업 구조 -->
+        <div class="section">
+            <h2>3단계: 부처 간 협업</h2>
+            <p class="section-desc">누가 함께 해야 하며, 어떻게 협업할 것인지를 명확히 하세요.</p>
+
+            <div class="subsection">
+                <h3>3-1. 협업 부처 식별</h3>
+                <div class="instruction-box">
+                    <strong>다음 네 가지 역할별로 담당 부처를 식별하세요:</strong>
+                </div>
+
+                <div class="input-section">
+                    <h4>협업 부처 목록</h4>
+                    
+                    <div class="form-group">
+                        <label>데이터 보유 부처</label>
+                        <input type="text" id="collab-data-owner" placeholder="예: OO부 OO과">
+                    </div>
+
+                    <div class="form-group">
+                        <label>제도·정책 소관 부처</label>
+                        <input type="text" id="collab-policy" placeholder="예: OO부 OO과">
+                    </div>
+
+                    <div class="form-group">
+                        <label>실제 업무 수행 부처</label>
+                        <input type="text" id="collab-operation" placeholder="예: OO부 OO과">
+                    </div>
+
+                    <div class="form-group">
+                        <label>플랫폼·인프라 운영 부처</label>
+                        <input type="text" id="collab-platform" placeholder="예: OO부 OO과">
+                    </div>
+                </div>
+            </div>
+
+            <div class="subsection">
+                <h3>3-2. 협업 구조 설계</h3>
+                <div class="instruction-box">
+                    <strong>협업 관계를 다음 원칙에 따라 설계하세요:</strong>
+                </div>
+
+                <div class="input-section">
+                    <h4>협업 원칙</h4>
+                    
+                    <div class="form-group">
+                        <label>주관 부처 지정</label>
+                        <input type="text" id="collab-lead" placeholder="이 프로젝트를 주도할 한 부처를 명시하세요">
+                    </div>
+
+                    <div class="form-group">
+                        <label>데이터 제공 부처의 역할</label>
+                        <div class="checkbox-group">
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="collab-role-participant">
+                                <label for="collab-role-participant">"참여자"로서 데이터만 제공</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="collab-role-codesigner" checked>
+                                <label for="collab-role-codesigner">"공동 설계자"로서 설계 단계부터 참여</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>시스템 구축 방식</label>
+                        <div class="checkbox-group">
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="collab-system-individual">
+                                <label for="collab-system-individual">각 부처별 개별 시스템 구축</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="collab-system-shared" checked>
+                                <label for="collab-system-shared">중앙의 공통 자산으로 통합 구축</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="subsection">
+                <h3>3-3. 협업 방식</h3>
+                <div class="instruction-box">
+                    <strong>다음 세 가지 협업 방식을 구체화하세요:</strong>
+                </div>
+
+                <div class="input-section">
+                    <h4>협업 일정 및 방식</h4>
+                    
+                    <div class="form-group">
+                        <label>초기 설계 워크숍 일정</label>
+                        <input type="text" id="collab-workshop" placeholder="예: 1월 15일 오후 2시, 정부청사 회의실">
+                    </div>
+
+                    <div class="form-group">
+                        <label>설계 단계 참여 담당자</label>
+                        <textarea id="collab-participants" placeholder="예: 데이터담당관(OO부), 정책담당(OO과), 현업담당(OO부 OO과), 기술담당(OO기관)"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>정기적 리뷰 일정</label>
+                        <select id="collab-review">
+                            <option value="">선택하세요</option>
+                            <option value="weekly">주 1회</option>
+                            <option value="biweekly">격주</option>
+                            <option value="monthly">월 1회</option>
+                            <option value="quarterly">분기별</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Step 4: As-Is / To-Be -->
+        <div class="section">
+            <h2>4단계: As-Is / To-Be 정의</h2>
+            <p class="section-desc">현재 상황과 개선 후 이미지를 명확히 정의하세요.</p>
+
+            <div class="subsection">
+                <h3>4-1. As-Is (현재 상태)</h3>
+                <div class="instruction-box">
+                    <strong>현재의 업무 흐름과 문제점을 파악하세요:</strong>
+                </div>
+
+                <div class="input-section">
+                    <h4>현재 상황 분석</h4>
+                    
+                    <div class="form-group">
+                        <label>현재 업무 흐름 설명</label>
+                        <textarea id="asis-process" placeholder="예: 1) 민원 접수 2) 담당자 배정 3) 서류 검토 4) 판단 5) 통보"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>소요 시간</label>
+                        <input type="text" id="asis-time" placeholder="예: 평균 15일 (최소 3일, 최대 30일)">
+                    </div>
+
+                    <div class="form-group">
+                        <label>병목 지점</label>
+                        <textarea id="asis-bottleneck" placeholder="예: 서류 검토 단계에서 2-3일 소요, 전문가 판단 단계에서 5-7일 대기"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>사람 의존 구간</label>
+                        <textarea id="asis-manual" placeholder="예: 서류의 정당성 판단, 기준에 맞는지 최종 검토 등이 모두 담당자의 수작업"></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <div class="subsection">
+                <h3>4-2. To-Be (개선 후)</h3>
+                <div class="instruction-box">
+                    <strong>AI 도입 후의 업무 흐름과 개선안을 설계하세요:</strong>
+                </div>
+
+                <div class="input-section">
+                    <h4>개선된 업무 흐름</h4>
+                    
+                    <div class="form-group">
+                        <label>AI 도입 후 업무 흐름</label>
+                        <textarea id="tobe-process" placeholder="예: 1) 민원 접수 2) AI가 서류 자동 검토 및 판단 3) 담당자 최종 검토 4) 통보"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>자동화/보조/판단 분리</label>
+                        <textarea id="tobe-roles" placeholder="예: 자동화(서류 기본 확인), 보조(AI가 판단안 제시), 수동(최종 의사결정)"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>사람의 역할 재정의</label>
+                        <textarea id="tobe-human-role" placeholder="예: 담당자는 AI 판단의 적절성만 검토하고, 이의 건에만 집중. 일상적 검토 업무 제거"></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <div class="subsection">
+                <h3>4-3. 변화의 범위 명시</h3>
+                <div class="instruction-box">
+                    <strong>AI 도입으로 기대되는 구체적인 변화를 수치화하세요:</strong>
+                </div>
+
+                <div class="input-section">
+                    <h4>예상 개선 효과</h4>
+                    
+                    <div class="form-group">
+                        <label>예상 업무 단축 시간</label>
+                        <input type="text" id="tobe-time-saved" placeholder="예: 15일 → 2일 (87% 단축)">
+                    </div>
+
+                    <div class="form-group">
+                        <label>판단 품질 개선 여부</label>
+                        <textarea id="tobe-quality" placeholder="예: 오류 감소율 80%, 일관성 있는 판단 기준 적용으로 이의 감소"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>시민 체감 변화</label>
+                        <textarea id="tobe-citizen-impact" placeholder="예: 민원 처리 시간 단축으로 만족도 향상, 처리 비용 감소"></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Step 5: 사용자 조사 -->
+        <div class="section">
+            <h2>5단계: 사용자 조사</h2>
+            <p class="section-desc">이 문제가 실제 문제임을 어떻게 확인할 것인지를 정의하세요.</p>
+
+            <div class="subsection">
+                <h3>5-1. 사전 검증</h3>
+                <div class="instruction-box">
+                    <strong>문제 정의의 정확성을 검증하기 위해 네 가지 방법을 시행하세요:</strong>
+                </div>
+
+                <div class="input-section">
+                    <h4>검증 계획</h4>
+                    
+                    <div class="form-group">
+                        <label>시민 인터뷰</label>
+                        <input type="text" id="user-interview-citizen" placeholder="예: 최근 3개월 민원인 20명, 1:1 심층 인터뷰">
+                    </div>
+
+                    <div class="form-group">
+                        <label>공무원 인터뷰</label>
+                        <input type="text" id="user-interview-staff" placeholder="예: 담당 부서 직원 10명, 그룹 인터뷰">
+                    </div>
+
+                    <div class="form-group">
+                        <label>민원·콜센터 로그 분석</label>
+                        <textarea id="user-log-analysis" placeholder="예: 지난 1년간 민원 접수 건수, 재신청률, 이의 제기 비율 분석"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>실제 업무 관찰 (Shadowing)</label>
+                        <input type="text" id="user-shadowing" placeholder="예: 담당자 3명을 2주간 관찰, 업무 시간 기록">
+                    </div>
+                </div>
+            </div>
+
+            <div class="subsection">
+                <h3>5-2. 사용자 만족도 측정</h3>
+                <div class="instruction-box">
+                    <strong>서비스 도입 후 사용자 만족도를 다음과 같이 측정하세요:</strong>
+                </div>
+
+                <div class="input-section">
+                    <h4>만족도 측정 방법</h4>
+                    
+                    <div class="form-group">
+                        <label>서비스 이용 후 간단 설문 내용</label>
+                        <textarea id="user-survey" placeholder="예: 1) 서비스가 도움이 되었나? 2) 처리 시간이 단축되었나? 3) 다시 사용하겠나?"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>업무 시간 절감 체감 여부 - 측정 방법</label>
+                        <textarea id="user-time-saved" placeholder="예: 사용 전후 처리 시간 비교, 매주 담당자 설문"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>신뢰도 및 재사용 의사</label>
+                        <textarea id="user-trust" placeholder="예: NPS(순추천고객지수) 조사, AI 판단 신뢰도 5점 척도 평가"></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <div class="subsection">
+                <h3>5-3. 사용률 기반 검증</h3>
+                <div class="instruction-box">
+                    <strong>실제 사용 데이터를 통해 서비스를 검증하세요:</strong>
+                </div>
+
+                <div class="input-section">
+                    <h4>사용 데이터 추적</h4>
+                    
+                    <div class="form-group">
+                        <label>실제 사용 빈도 - 추적 방법</label>
+                        <textarea id="user-frequency" placeholder="예: 일일 사용 건수, 월간 활성 사용자 수(MAU) 추적"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>반복 사용 여부</label>
+                        <textarea id="user-repeat" placeholder="예: 월 재사용률 목표 80% (목표: 처음 사용자의 80%가 한 달 내 재사용)"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>AI 추천/응답 채택률</label>
+                        <textarea id="user-adoption" placeholder="예: AI가 제시한 판단안을 담당자가 수용하는 비율 목표 85%"></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="navigation">
+            <button class="btn-prev" id="btn-prev" onclick="previousStep()" disabled>이전</button>
+            <button class="btn-next" id="btn-next" onclick="nextStep()">다음</button>
+        </div>
+    </div>
+
+    <script>
+        const SECTIONS = 5;
+        const STORAGE_KEY = 'checklist_data';
+        let currentStep = 1;
+        let formData = {};
+
+        function initializeChecklist() {
+            loadData();
+            renderSection();
+            attachFormListeners();
+        }
+
+        function attachFormListeners() {
+            document.querySelectorAll('input, textarea, select').forEach(element => {
+                element.addEventListener('change', saveData);
+                element.addEventListener('input', saveData);
+            });
+        }
+
+        function renderSection() {
+            const sections = document.querySelectorAll('.section');
+            sections.forEach((section, index) => {
+                if (index + 1 === currentStep) {
+                    section.classList.add('active');
+                } else {
+                    section.classList.remove('active');
+                }
+            });
+
+            document.getElementById('current-step').textContent = currentStep;
+            document.getElementById('btn-prev').disabled = currentStep === 1;
+            document.getElementById('btn-next').disabled = currentStep >= SECTIONS;
+
+            if (currentStep === SECTIONS) {
+                document.getElementById('btn-next').textContent = '완료';
+            } else {
+                document.getElementById('btn-next').textContent = '다음';
+            }
+        }
+
+        function nextStep() {
+            if (currentStep < SECTIONS) {
+                currentStep++;
+                renderSection();
+            }
+            window.scrollTo(0, 0);
+        }
+
+        function previousStep() {
+            if (currentStep > 1) {
+                currentStep--;
+                renderSection();
+            }
+            window.scrollTo(0, 0);
+        }
+
+        function saveData() {
+            const inputs = document.querySelectorAll('input, textarea, select');
+            formData = {};
+            inputs.forEach(input => {
+                if (input.type === 'checkbox') {
+                    formData[input.id] = input.checked;
+                } else {
+                    formData[input.id] = input.value;
+                }
+            });
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(formData));
+        }
+
+        function loadData() {
+            const saved = localStorage.getItem(STORAGE_KEY);
+            if (saved) {
+                formData = JSON.parse(saved);
+                const inputs = document.querySelectorAll('input, textarea, select');
+                inputs.forEach(input => {
+                    if (input.type === 'checkbox') {
+                        input.checked = formData[input.id] || false;
+                    } else {
+                        input.value = formData[input.id] || '';
+                    }
+                });
+            }
+        }
+
+        window.addEventListener('load', () => {
+            initializeChecklist();
+        });
+
+        function downloadAsFile() {
+            const inputs = document.querySelectorAll('input, textarea, select');
+            let content = '# 정부 AI 응용 서비스 개발 체크리스트\n\n';
+            content += '**작성 일시:** ' + new Date().toLocaleString('ko-KR') + '\n\n';
+            content += '---\n\n';
+
+            let currentStep = '';
+            let currentSection = '';
+            
+            inputs.forEach(input => {
+                const stepTitle = input.closest('.section')?.querySelector('h2')?.textContent;
+                const sectionTitle = input.closest('.subsection')?.querySelector('h3')?.textContent;
+                const formGroup = input.closest('.form-group');
+                const label = formGroup?.querySelector('label');
+
+                if (stepTitle && stepTitle !== currentStep) {
+                    currentStep = stepTitle;
+                    content += '\n## ' + stepTitle + '\n\n';
+                }
+
+                if (sectionTitle && sectionTitle !== currentSection) {
+                    currentSection = sectionTitle;
+                    content += '### ' + sectionTitle + '\n\n';
+                }
+
+                if (label) {
+                    const labelText = label.textContent.trim();
+                    if (input.type === 'checkbox') {
+                        if (input.checked) {
+                            content += '- [x] ' + labelText + '\n';
+                        }
+                    } else if (input.value.trim()) {
+                        content += '**' + labelText + '**\n\n';
+                        content += '```\n' + input.value.trim() + '\n```\n\n';
+                    }
+                }
+            });
+
+            const element = document.createElement('a');
+            element.setAttribute('href', 'data:text/markdown;charset=utf-8,' + encodeURIComponent(content));
+            element.setAttribute('download', '정부AI응용서비스개발체크리스트_' + formatDate(new Date()) + '.md');
+            element.style.display = 'none';
+            document.body.appendChild(element);
+            element.click();
+            document.body.removeChild(element);
+        }
+
+        function printResults() {
+            const printWindow = window.open('', '', 'height=800,width=1000');
+            const inputs = document.querySelectorAll('input, textarea, select');
+            
+            let htmlContent = `
+                <!DOCTYPE html>
+                <html lang="ko">
+                <head>
+                    <meta charset="UTF-8">
+                    <title>정부 AI 응용 서비스 개발 체크리스트</title>
+                    <style>
+                        body {
+                            font-family: 'Noto Sans KR', sans-serif;
+                            line-height: 1.6;
+                            color: #333;
+                            margin: 20px;
+                        }
+                        h1 {
+                            text-align: center;
+                            color: #0052A3;
+                            border-bottom: 2px solid #0052A3;
+                            padding-bottom: 10px;
+                        }
+                        h2 {
+                            color: #003D7A;
+                            margin-top: 30px;
+                            page-break-inside: avoid;
+                        }
+                        h3 {
+                            color: #0052A3;
+                            font-size: 1.1em;
+                            margin-top: 15px;
+                        }
+                        .section-item {
+                            margin-bottom: 15px;
+                            padding: 10px;
+                            border-left: 3px solid #0052A3;
+                            background: #f9f9f9;
+                        }
+                        .item-label {
+                            font-weight: bold;
+                            color: #003D7A;
+                            margin-bottom: 5px;
+                        }
+                        .item-value {
+                            color: #555;
+                            white-space: pre-wrap;
+                            word-break: break-word;
+                        }
+                        .metadata {
+                            text-align: right;
+                            color: #999;
+                            font-size: 0.9em;
+                            margin-bottom: 20px;
+                        }
+                        @media print {
+                            body { margin: 0; }
+                            h2 { page-break-before: avoid; }
+                        }
+                    </style>
+                </head>
+                <body>
+                    <h1>정부 AI 응용 서비스 개발 체크리스트</h1>
+                    <div class="metadata">
+                        작성 일시: ${new Date().toLocaleString('ko-KR')}
+                    </div>
+            `;
+
+            let currentStep = '';
+            let currentSection = '';
+            
+            inputs.forEach(input => {
+                const stepTitle = input.closest('.section')?.querySelector('h2')?.textContent;
+                const sectionTitle = input.closest('.subsection')?.querySelector('h3')?.textContent;
+                const label = input.parentElement.querySelector('label');
+
+                if (stepTitle && stepTitle !== currentStep) {
+                    currentStep = stepTitle;
+                    htmlContent += '<h2>' + stepTitle + '</h2>';
+                }
+
+                if (sectionTitle && sectionTitle !== currentSection) {
+                    currentSection = sectionTitle;
+                    htmlContent += '<h3>' + sectionTitle + '</h3>';
+                }
+
+                if (label) {
+                    const labelText = label.textContent.trim();
+                    if (input.type === 'checkbox') {
+                        if (input.checked) {
+                            htmlContent += '<div class="section-item">';
+                            htmlContent += '<div class="item-label">✓ ' + labelText + '</div>';
+                            htmlContent += '</div>';
+                        }
+                    } else if (input.value) {
+                        htmlContent += '<div class="section-item">';
+                        htmlContent += '<div class="item-label">' + labelText + '</div>';
+                        htmlContent += '<div class="item-value">' + input.value.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</div>';
+                        htmlContent += '</div>';
+                    }
+                }
+            });
+
+            htmlContent += `
+                </body>
+                </html>
+            `;
+
+            printWindow.document.write(htmlContent);
+            printWindow.document.close();
+            
+            setTimeout(() => {
+                printWindow.print();
+            }, 250);
+        }
+
+        function formatDate(date) {
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const day = String(date.getDate()).padStart(2, '0');
+            const hours = String(date.getHours()).padStart(2, '0');
+            const minutes = String(date.getMinutes()).padStart(2, '0');
+            return year + month + day + '_' + hours + minutes;
+        }
+    </script>
+</body>
+</html>
