@@ -403,7 +403,7 @@
         </div>
 
         <div class="step-indicator">
-            <span>Step <strong id="current-step">1</strong> / <strong>5</strong></span>
+            <span>Step <strong id="current-step">1</strong> / <strong>9</strong></span>
             <div style="display: flex; gap: 10px;">
                 <button class="btn-export" onclick="downloadAsFile()" title="파일로 다운로드">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -424,6 +424,7 @@
             </div>
         </div>
 
+        <!-- Step 1부터 Step 5까지는 본래 코드 그대로 -->
         <!-- Step 1: 문제 정의 -->
         <div class="section active">
             <h2>1단계: 문제 정의</h2>
@@ -1045,6 +1046,367 @@
             </div>
         </div>
 
+        <!-- Step 6: 운영 지표 (KPI) -->
+        <div class="section">
+            <h2>6단계: 운영 지표 (KPI)</h2>
+            <p class="section-desc">무엇을 반드시 측정해야 하는지를 명확히 하세요.</p>
+
+            <div class="subsection">
+                <h3>6-1. 필수 지표</h3>
+                <div class="instruction-box">
+                    <strong>다음 네 가지는 반드시 정의하세요:</strong>
+                </div>
+
+                <div class="input-section">
+                    <h4>필수 지표 정의</h4>
+                    
+                    <div class="form-group">
+                        <label>사용자 수 (DAU/MAU)</label>
+                        <textarea id="kpi-users" placeholder="예: 일일 활성사용자(DAU) 목표 500명, 월간 활성사용자(MAU) 목표 1,500명"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>처리 시간 단축률</label>
+                        <textarea id="kpi-time" placeholder="예: 평균 처리 시간 15일 → 2일 (87% 단축)"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>자동화/보조 성공률</label>
+                        <textarea id="kpi-success" placeholder="예: AI 자동화 처리율 85% 이상, 사람 검토 개입 15% 이하"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>오류·이탈률</label>
+                        <textarea id="kpi-error" placeholder="예: 처리 오류율 5% 이하, 사용자 이탈율 10% 이하"></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <div class="subsection">
+                <h3>6-2. AI 특화 지표</h3>
+                <div class="instruction-box">
+                    <strong>AI 모델 성능을 측정하는 지표:</strong>
+                </div>
+
+                <div class="input-section">
+                    <h4>AI 성능 지표</h4>
+                    
+                    <div class="form-group">
+                        <label>모델 응답 정확도</label>
+                        <textarea id="kpi-accuracy" placeholder="예: 분류 정확도 92% 이상, F1-score 0.88 이상"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>인간 검토 개입 비율</label>
+                        <textarea id="kpi-human-review" placeholder="예: AI 판단 수용률 85% (15%만 인간이 수정)"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>예외 처리 비율</label>
+                        <textarea id="kpi-exception" placeholder="예: 처리 불가 사례 5% 이하 (95%는 자동 처리)"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>데이터 최신성 지표</label>
+                        <textarea id="kpi-data-freshness" placeholder="예: 학습 데이터 갱신 주기 월 1회, 추론 데이터 지연 1시간 이내"></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <div class="subsection">
+                <h3>6-3. 자동 수집 방법</h3>
+                <div class="instruction-box">
+                    <strong>지표를 자동으로 수집하는 방법:</strong>
+                </div>
+
+                <div class="input-section">
+                    <h4>수집 방법</h4>
+                    
+                    <div class="form-group">
+                        <label>로그 기반 자동 수집 방법</label>
+                        <textarea id="kpi-collection" placeholder="예: 모든 거래는 자동으로 로그에 기록, 수작업 보고 없음, 대시보드에서 실시간 조회 가능"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>수집 주기 및 리포팅</label>
+                        <textarea id="kpi-reporting" placeholder="예: 실시간 알림(장애 시), 일일 리포트(아침 9시), 주간 리포트(금요일 오후 4시)"></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Step 7: 성공과 실패 기준 -->
+        <div class="section">
+            <h2>7단계: 성공과 실패 기준</h2>
+            <p class="section-desc">언제 성공이고, 언제 접을 것인지를 명확히 하세요.</p>
+
+            <div class="subsection">
+                <h3>7-1. 성공 기준</h3>
+                <div class="instruction-box">
+                    <strong>다음 세 가지가 모두 충족되면 성공:</strong>
+                </div>
+
+                <div class="input-section">
+                    <h4>성공 기준</h4>
+                    
+                    <div class="form-group">
+                        <label>KPI 달성 기준</label>
+                        <textarea id="success-kpi" placeholder="예: DAU 500명 이상, 처리시간 단축률 80% 이상, 자동화 성공률 85% 이상"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>사용자 재사용률</label>
+                        <textarea id="success-reuse" placeholder="예: 월간 재사용률 70% 이상 (처음 사용자의 70%가 다시 사용)"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>담당자 만족도</label>
+                        <textarea id="success-satisfaction" placeholder="예: 공무원 만족도 조사 3.5점 이상 (5점 만점), 실무 부담 감소 체감 80% 이상"></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <div class="subsection">
+                <h3>7-2. 실패 기준</h3>
+                <div class="instruction-box">
+                    <strong>다음 중 하나라도 해당하면 중단 검토:</strong>
+                </div>
+
+                <div class="input-section">
+                    <h4>중단 기준</h4>
+                    
+                    <div class="form-group">
+                        <label>사용률 미달 지속</label>
+                        <textarea id="failure-usage" placeholder="예: 3개월 연속 DAU 200명 이하, 월간 활성사용자 500명 이하"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>수작업 비용 초과</label>
+                        <textarea id="failure-cost" placeholder="예: 자동화 효과보다 인간 검토 비용이 30% 이상 높음"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>법·제도 리스크</label>
+                        <textarea id="failure-risk" placeholder="예: 개인정보 보호법 위반 지적, 법적 이의 제기 3건 이상"></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <div class="subsection">
+                <h3>7-3. 지속/개선/중단 결정</h3>
+                <div class="instruction-box">
+                    <strong>정기적 검토 및 의사결정 프로세스:</strong>
+                </div>
+
+                <div class="input-section">
+                    <h4>의사결정 프로세스</h4>
+                    
+                    <div class="form-group">
+                        <label>기준 충족 시 (확산 계획)</label>
+                        <textarea id="decision-expand" placeholder="예: 다른 부서 확산, 예산 증액, 추가 기능 개발"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>기준 미달 시 (개선 계획)</label>
+                        <textarea id="decision-improve" placeholder="예: 데이터 보완, 모델 재학습, 프로세스 개선, 3개월 재평가"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>개선 불가 시 (중단 절차)</label>
+                        <textarea id="decision-stop" placeholder="예: 2번의 개선 시도 후 지표 미달 시 중단 결정, 데이터 백업 및 인수인계"></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Step 8: 마일스톤 설계 -->
+        <div class="section">
+            <h2>8단계: 마일스톤 설계</h2>
+            <p class="section-desc">언제 무엇을 검증할 것인지를 정의하세요.</p>
+
+            <div class="subsection">
+                <h3>8-1. 마일스톤 설정</h3>
+                <div class="instruction-box">
+                    <strong>4개의 주요 마일스톤을 설정하세요:</strong>
+                </div>
+
+                <div class="input-section">
+                    <h4>마일스톤 정의</h4>
+                    
+                    <div class="form-group">
+                        <label>M1: 문제·데이터 정의 완료</label>
+                        <textarea id="milestone-m1" placeholder="예: 2026년 3월 31일까지 문제 정의, 데이터 확보, 협업 부처 확정"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>M2: 최소 기능(MVP) 구현</label>
+                        <textarea id="milestone-m2" placeholder="예: 2026년 5월 31일까지 기본 기능 완성, 로그 시스템 구축"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>M3: 제한된 실사용 파일럿</label>
+                        <textarea id="milestone-m3" placeholder="예: 2026년 7월~8월 한 부서 200명을 대상으로 2개월 파일럿 운영"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>M4: 확산 여부 최종 결정</label>
+                        <textarea id="milestone-m4" placeholder="예: 2026년 9월 30일 KPI 기반 최종 평가 및 확산/중단 결정"></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <div class="subsection">
+                <h3>8-2. Pass 기준</h3>
+                <div class="instruction-box">
+                    <strong>각 마일스톤의 통과 기준:</strong>
+                </div>
+
+                <div class="input-section">
+                    <h4>통과 조건</h4>
+                    
+                    <div class="form-group">
+                        <label>실제 사용자 확보</label>
+                        <textarea id="pass-users" placeholder="예: M3에서 실제 사용자 200명 이상 참여, 월간 재사용률 60% 이상"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>KPI 최소치 달성</label>
+                        <textarea id="pass-kpi" placeholder="예: 자동화 성공률 70% 이상, 처리시간 단축 50% 이상"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>운영 가능성 검증</label>
+                        <textarea id="pass-operation" placeholder="예: 장애 대응 체계 수립, 담당자 교육 완료, 유지보수 비용 예측 완료"></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <div class="subsection">
+                <h3>8-3. Fail 결정 시점</h3>
+                <div class="instruction-box">
+                    <strong>다음 조건 중 하나 충족 시 중단:</strong>
+                </div>
+
+                <div class="input-section">
+                    <h4>중단 조건</h4>
+                    
+                    <div class="form-group">
+                        <label>지표 미달 지속</label>
+                        <textarea id="fail-metrics" placeholder="예: 2번의 개선 시도 후에도 KPI 달성 불가"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>비용 효율성 부족</label>
+                        <textarea id="fail-cost" placeholder="예: 구축·운영 비용이 효과의 3배 이상 초과"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>기술·법적 한계</label>
+                        <textarea id="fail-limitation" placeholder="예: 필수 데이터 확보 불가, 개인정보보호법 적용 시 구현 불가능"></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Step 9: 모델 독립성 및 로그 시스템 -->
+        <div class="section">
+            <h2>9단계: 모델 독립성 & 로그 시스템</h2>
+            <p class="section-desc">기술 종속을 피하고, 안정적인 운영 기반을 확보하세요.</p>
+
+            <div class="subsection">
+                <h3>9-1. 모델 독립성</h3>
+                <div class="instruction-box">
+                    <strong>특정 AI 모델에 종속되지 않도록 설계하세요:</strong>
+                </div>
+
+                <div class="input-section">
+                    <h4>독립성 확보 방법</h4>
+                    
+                    <div class="form-group">
+                        <label>모델 교체 가능 구조</label>
+                        <textarea id="independence-model" placeholder="예: API 추상화 계층으로 OpenAI → Google Vertex AI로 전환 가능하도록 설계"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>프롬프트·로직 분리</label>
+                        <textarea id="independence-prompt" placeholder="예: 프롬프트는 설정 파일로 관리, 모델 변경 시 코드 수정 최소화"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>데이터와 모델 분리</label>
+                        <textarea id="independence-data" placeholder="예: 학습 데이터와 모델을 별도 저장소에서 관리, 모델만 교체 가능"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>복수 모델 테스트</label>
+                        <textarea id="independence-test" placeholder="예: GPT-4, Claude, Gemini 등 3개 모델 성능 비교 및 비용 분석"></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <div class="subsection">
+                <h3>9-2. 로그 시스템 구축</h3>
+                <div class="instruction-box">
+                    <strong>운영 및 문제 해결을 위한 로그 시스템:</strong>
+                </div>
+
+                <div class="input-section">
+                    <h4>로그 항목 정의</h4>
+                    
+                    <div class="form-group">
+                        <label>필수 로그 항목</label>
+                        <textarea id="logs-items" placeholder="예: 시간(언제), 사용자(누가), 요청(무엇), 응답(결과), 처리시간, 오류여부"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>AI 특화 로그</label>
+                        <textarea id="logs-ai" placeholder="예: 사용 모델명, 입력 데이터 출처, AI 신뢰도 점수, 사람이 수정한 여부"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>중앙 저장소</label>
+                        <textarea id="logs-storage" placeholder="예: 모든 로그는 중앙 데이터베이스에 자동 수집, 엑셀/텍스트 보고 불가"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>실시간 알림 조건</label>
+                        <textarea id="logs-alert" placeholder="예: 서비스 다운 시, AI 오류율 10% 초과 시, 데이터 갱신 실패 시 즉시 알림"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>주간 자동 리포트</label>
+                        <textarea id="logs-report" placeholder="예: 매주 금요일 오후 4시 자동 생성, 사용률, 오류율, 처리시간 변화 추적"></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <div class="subsection">
+                <h3>9-3. 책임성과 투명성</h3>
+                <div class="instruction-box">
+                    <strong>AI 판단의 설명 가능성과 책임성 확보:</strong>
+                </div>
+
+                <div class="input-section">
+                    <h4>투명성 확보</h4>
+                    
+                    <div class="form-group">
+                        <label>판단 근거 기록</label>
+                        <textarea id="transparency-reason" placeholder="예: AI가 판단할 때 어떤 데이터와 규칙을 참고했는지 기록하고 사용자에게 설명"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>오류 정정 프로세스</label>
+                        <textarea id="transparency-correction" placeholder="예: AI 판단이 틀린 경우 즉시 수정 가능, 수정 이유 기록"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>정기 감시 및 감사</label>
+                        <textarea id="transparency-audit" placeholder="예: 월 1회 AI 판단 정확도 감시, 분기별 공식 감사, 결과 공개"></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div class="navigation">
             <button class="btn-prev" id="btn-prev" onclick="previousStep()" disabled>이전</button>
             <button class="btn-next" id="btn-next" onclick="nextStep()">다음</button>
@@ -1052,7 +1414,7 @@
     </div>
 
     <script>
-        const SECTIONS = 5;
+        const SECTIONS = 9;
         const STORAGE_KEY = 'checklist_data';
         let currentStep = 1;
         let formData = {};
